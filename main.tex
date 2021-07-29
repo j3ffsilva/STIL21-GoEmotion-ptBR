@@ -24,22 +24,21 @@
      
 \sloppy
 
-\title{Instructions for Authors of SBC Conferences\\ Papers and Abstracts}
+\title{Constructing a weak supervised dataset of Fine-Grained Emotions in Portuguese}
 
-\author{Luciana P. Nedel\inst{1}, Rafael H. Bordini\inst{2}, Flávio Rech
-  Wagner\inst{1}, Jomi F. Hübner\inst{3} }
+\author{Diogo Cortiz\inst{1,2}, Jefferson O. Silva\inst{2}, Flávio Rech
+  Wagner\inst{2}, Jomi F. Hübner\inst{3} }
 
 
-\address{Instituto de Informática -- Universidade Federal do Rio Grande do Sul
-  (UFRGS)\\
-  Caixa Postal 15.064 -- 91.501-970 -- Porto Alegre -- RS -- Brazil
+\address{Web Technology Study Center (Ceweb.br) - Brazilian Network Information Center (NIC.br) \\
+  São Paulo - SP - Brazil
 \nextinstitute
-  Department of Computer Science -- University of Durham\\
-  Durham, U.K.
+  Pontificia Universidade Católica de São Paulo (PUC-SP)\\
+  São Paulo, SP, Brazil.
 \nextinstitute
   Departamento de Sistemas e Computação\\
   Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
-  \email{\{nedel,flavio\}@inf.ufrgs.br, R.Bordini@durham.ac.uk,
+  \email{\{dcortiz\}@pucsp.br, R.Bordini@durham.ac.uk,
   jomi@inf.furb.br}
 }
 
@@ -66,62 +65,101 @@
 \end{resumo}
 
 
-\section{General Information}
+\section{Introduction}
 
-All full papers and posters (short papers) submitted to some SBC conference,
-including any supporting documents, should be written in English or in
-Portuguese. The format paper should be A4 with single column, 3.5 cm for upper
-margin, 2.5 cm for bottom margin and 3.0 cm for lateral margins, without
-headers or footers. The main font must be Times, 12 point nominal size, with 6
-points of space before each paragraph. Page numbers must be suppressed.
+Affective computing is the study of how computers can recognize, interpret and simulate human effects. According to Rosalind Picard, one of the pionners in this field, it is important to develop the ability to recognize, understand and express emotions in computers if we want to have an intelligent and natural interaction between human and machines \cite{Rosalind2000}. We can develop affective computing technologies using different types of input: such as facial expression, voice, physiological data and language. The scope of this research, however, is delimited in the area of Natural Language Processing (NLP).
 
-Full papers must respect the page limits defined by the conference.
-Conferences that publish just abstracts ask for \textbf{one}-page texts.
+A common task in NLP is Sentiment Analysis which typically classify a text in three different categories: positive, negative and neutral \cite{Drus2019}. Emotion Recognition task, however, is a more detailed NLP task. Rather than classifying text only into valence categories (positive, negative or neutral), it classifies text into more detailed emotional categories.
 
-\section{First Page} \label{sec:firstpage}
-Teste de citação de \cite{Devlin2018}
-The first page must display the paper title, the name and address of the
-authors, the abstract in English and ``resumo'' in Portuguese (``resumos'' are
-required only for papers written in Portuguese). The title must be centered
-over the whole page, in 16 point boldface font and with 12 points of space
-before itself. Author names must be centered in 12 point font, bold, all of
-them disposed in the same line, separated by commas and with 12 points of
-space after the title. Addresses must be centered in 12 point font, also with
-12 points of space after the authors' names. E-mail addresses should be
-written using font Courier New, 10 point nominal size, with 6 points of space
-before and 6 points of space after.
+The delimitation of this research is concentrated in the area of fine-grained Emotion Recognitiom. In other words, the focus of the work is to study the creation of a corpus in Portuguese that has a greater granularity of emotional categories, instead of just the valence categories.
 
-The abstract and ``resumo'' (if is the case) must be in 12 point Times font,
-indented 0.8cm on both sides. The word \textbf{Abstract} and \textbf{Resumo},
-should be written in boldface and must precede the text.
+\section{Related Work} 
 
-\section{CD-ROMs and Printed Proceedings}
+There is an ongoing debate about the nature of human emotions, with different perspectives and theories. On one side is the theory of basic emotions, whose greatest exponent is the psychologist Paul Ekman. According to him, there are basic and universal emotions in humans that have unique features: such as facial expressions, signs, physiology and antecedent events \cite{Ekman1992}. 
 
-In some conferences, the papers are published on CD-ROM while only the
-abstract is published in the printed Proceedings. In this case, authors are
-invited to prepare two final versions of the paper. One, complete, to be
-published on the CD and the other, containing only the first page, with
-abstract and ``resumo'' (for papers in Portuguese).
+There are several works in the area of NLP that are based on the theory of basic emotions to classify texts into defined categories of emotions, ranging from 4 (four) to 8 (eight) the number of categories. One of the studies adopted the 6 (six) basic emotions proposed by Ekman (joy, fear, anger, sadness, surprise and disgust) to train an Emotion Recongnition model \cite{Batbaatar2019}. Another researched added trust and anticipation emotions to the basic emotions, working with 8 (eight) basic emotion categories \cite{Sosea2020}.
 
-\section{Sections and Paragraphs}
+However, there are other theories that challenge the proposition of basic emotions. Lisa Feldman Barrett proposed The Theory of Constructed emotion. Supported by positions from cognitive science and evidence from neuroscience experiments, the researcher argues that basic and universal emotions do not exist and that all emotional experience is constructed based on interoception and categorization process \cite{Barrett2016}.
 
-Section titles must be in boldface, 13pt, flush left. There should be an extra
-12 pt of space before each title. Section numbering is optional. The first
-paragraph of each section should not be indented, while the first lines of
-subsequent paragraphs should be indented by 1.27 cm.
+Between those two antagonistic theories (The Basic Emotion Theory and The Theory of Constructed Emotion) an alternative perspective emerges: The Semantic Space Theory \cite{Cowen2021}. It is a computational approach that uses naturalistic stimuli and open-ended statistical techniques to capture emotional variations in behavior. The results suggest that more than 25 emotional classes have distinct profiles of previous expressions and events. The authors argue that these emotions are high-dimensional, categorical, and often blended.
 
-\subsection{Subsections}
+Based on the Semantic Space Theory, a research that had the participation of one of the authors of the theory, created a dataset for training NLP models in the Emotion Recognition task. This is GoEmotions, a dataset with more than 58,000 Portuguese Reddit comments noted for 27 categories of emotions and Neutral. The authors fine-tuned a BERT language model and achieved an average F1-score of .46 \cite{Demszky2020}.
 
-The subsection titles must be in boldface, 12pt, flush left.
+Despite the average f1-score below .50, some classes scored above .70. It is a complex dataset with a lot of categories that often have fuzzy boundaries between them. It is important to argue about the importance of creating a fine-grained dataset, with more emotional categories, so that research in the Affective Computing area is not limited to Sentiment Analysis or to the limited categories proposed by the basic theory.
 
-\section{Figures and Captions}\label{sec:figs}
+Although the GoEmotion dataset was released according to open data standards \cite{Demszky2020}, the scope of the corpus is limited to the English, which makes it difficult to use in applications in other languages. One of the challenges that the Machine Learning faces is dealing with low-resources, when the data available is not enough to train the models. This phenomenon can happen in specific domains of applications, but also in specific geographic regions.
+
+In the area of NLP there is a lack of datasets and corpus available in many languages. This is the case of Portuguese, which has a small amount of Sentiment Analysis datasets when compared to English \cite{Pereira2021}. It's worth noting that we searched for dataset of fine-grained emotion, but we didn't find any in Portuguese.
+
+\section{Objectives, Research Questions and Hypothesis}
+
+The objective of this research is to study the creation of a corpus of fine-grained emotions for low resources languages, specifically the Portuguese. Due to limited financial resources, a specific objective of this work is to study the use of the weak supervision strategy to construct our corpus. Weak supervision is a strategy when there is no human annotation of each datapoint does not occur, but the labels are attributed using noisy and limited sources or specific rules. Then we proposed the following Research Question to guide our work:
+
+RQ1: Is the weak supervision strategy suitable for building an NLP corpus for the fine-grained Emotion Recognition task in a low resources environment?
+
+RQ2: What is a proper weak supervision approach to construct a corpus for  fine-grained Emotion Recognition task in NLP? 
+
+One of our hypothesis is that a lexical-based approach can be an adequate strategy to collect samples for each of the categories of our dataset, using the Lexical Item (LI) as a criterion for defining the label in an adequate way for Portuguese. A second hypothesis is that the use of SOTA Machine Learning techniques (specifically Transformers based language models), combined with the application of masking techniques in the LI presented in the weak supervised corpus, can avoid the model to overfit during the learning phase. 
+
+To answer RQ1 and RQ2 and validate our hypotheses, we prepared an experiment to create a weak supervised corpus in Portuguese and measure its performance by training a classification model. In the following sections we will describe our experimental protocol, including how we collected and weakly annotated the data, our model architecture, metrics and results. 
+
+\section{Experimental Protocol}
+
+Our experiment is composed by the following pipeline: defining emotion categories based on semantic space theory for Portuguese; selecting the lexical items related to each emotion category based on its definition; collecting the data; manually annotating a test dataset to create a golden standard; defining the model architecture; training the model and evaluating it on golden standard. Each of them is described in details in this paper.
+
+\subsection{Defining Emotion Categories}
+- Explicar que herdamos as emoções do GoEmotion, mas adicionamos saudade,
 
 
-Figure and table captions should be centered if less than one line
-(Figure~\ref{fig:exampleFig1}), otherwise justified and indented by 0.8cm on
-both margins, as shown in Figure~\ref{fig:exampleFig2}. The caption font must
-be Helvetica, 10 point, boldface, with 6 points of space before and after each
-caption.
+\subsection{Selecting Lexical Items for weak supervision }
+- Explicar o processo de Weaklabel (associação dos termos com as categorias de emoções - sinônimos e conjugações de verbos que tinham a ver com a definição de emoção utilizada)
+
+\subsection{Collecting the data}
+
+- A coleta foi feita no twitter entre os dias 23 e 24 de junho de 2016. 
+- Descrever o processo de limpeza. Foram removidos hashtags, Links e replies.
+
+- Descrever o tamanho da amostra total de treino e por emoções. 
+
+\subsection{Golden standard for test dataset}
+
+- Descrever que a amostra de test passou por um processo de anotação manual. Descrever o tamanho da amostra total e por emoções.
+
+
+
+\subsection{Models}
+- Descrever que o modelo utilizado foi a implementação BERT Bertimbau pré-treinado. 
+
+- Foi feito o fine-tuning de três modelos
+
+- O primeiro usou o dados de treinamento sem intervenção
+
+- O segundo uso dados de treinamento no qual 30% dos datapoints foram mascarados. Ou seja, 30% dos termos utilizados para o WeakLabel foram trocados por [MASK]. Argumentar que a importância disso era evitar o overffiting por palavras específicas. 
+
+- O terceiro modelo foi treinado mascarando todos os termos por [MASK]
+
+\subsection{Parameters Settings}
+Settings do modelo
+- learning rate
+- batchsize 
+- epochs
+- threshold 
+
+\subsection{Metrics}
+Descrever que a métrica de avaliação será a Precision, Recall and F1-score Macro (para o modelo e classes). 
+
+\subsection{Results}
+Apresentar o resultado dos três modelos treinados:
+
+- Sem intervenção
+
+- 30 por cento dos termos mascarados
+
+- 100 por cento dos termos mascarados
+
+
+\section{Conclusions}\label{sec:figs}
+
 
 \begin{figure}[ht]
 \centering
