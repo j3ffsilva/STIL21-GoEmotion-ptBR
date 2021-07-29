@@ -21,24 +21,26 @@
 %\usepackage[brazil]{babel}
 \usepackage[utf8]{inputenc}
 
+\usepackage{xcolor}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+
 
 \sloppy
 
-\title{Constructing a weak supervised dataset of Fine-Grained Emotions in Portuguese}
+\title{A Weak Supervised Dataset of Fine-Grained Emotions in Portuguese}
 
 \author{Diogo Cortiz\inst{1,2}, Jefferson O. Silva\inst{2}, Flávio Rech
   Wagner\inst{2}, Jomi F. Hübner\inst{3} }
 
-
-\address{Web Technology Study Center (Ceweb.br) - Brazilian Network Information Center (NIC.br) \\
-  São Paulo - SP - Brazil
+\address{Web Technology Study Center (Ceweb.br) -- Brazilian Network Information Center (NIC.br) \\
+  São Paulo, SP -- Brazil
 \nextinstitute
-  Pontificia Universidade Católica de São Paulo (PUC-SP)\\
-  São Paulo, SP, Brazil.
+  Pontifical Catholic University of São Paulo (PUC-SP) \\
+  São Paulo, SP -- Brazil.
 \nextinstitute
   Departamento de Sistemas e Computação\\
   Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
-  \email{\{dcortiz\}@pucsp.br, R.Bordini@durham.ac.uk,
+  \email{\{dcortiz\}@pucsp.br, r.bordini@durham.ac.uk,
   jomi@inf.furb.br}
 }
 
@@ -71,11 +73,11 @@ Affective computing is the study of how computers can recognize, interpret and s
 
 A common task in NLP is Sentiment Analysis which typically classify a text in three different categories: positive, negative and neutral \cite{Drus2019}. Emotion Recognition task, however, is a more detailed NLP task. Rather than classifying text only into valence categories (positive, negative or neutral), it classifies text into more detailed emotional categories.
 
-The delimitation of this research is concentrated in the area of fine-grained Emotion Recognitiom. In other words, the focus of the work is to study the creation of a corpus in Portuguese that has a greater granularity of emotional categories, instead of just the valence categories.
+The delimitation of this research is concentrated in the area of fine-grained Emotion Recognition. In other words, the focus of the work is to study the creation of a corpus in Portuguese that has a greater granularity of emotional categories, instead of just the valence categories.
 
-\section{Related Work} 
+\section{Related Work}
 
-There is an ongoing debate about the nature of human emotions, with different perspectives and theories. On one side is the theory of basic emotions, whose greatest exponent is the psychologist Paul Ekman. According to him, there are basic and universal emotions in humans that have unique features: such as facial expressions, signs, physiology and antecedent events \cite{Ekman1992}. 
+There is an ongoing debate about the nature of human emotions, with different perspectives and theories. On one side is the theory of basic emotions, whose greatest exponent is the psychologist Paul Ekman. According to him, there are basic and universal emotions in humans that have unique features: such as facial expressions, signs, physiology and antecedent events \cite{Ekman1992}.
 
 There are several works in the area of NLP that are based on the theory of basic emotions to classify texts into defined categories of emotions, ranging from 4 (four) to 8 (eight) the number of categories. One of the studies adopted the 6 (six) basic emotions proposed by Ekman (joy, fear, anger, sadness, surprise and disgust) to train an Emotion Recongnition model \cite{Batbaatar2019}. Another researched added trust and anticipation emotions to the basic emotions, working with 8 (eight) basic emotion categories \cite{Sosea2020}.
 
@@ -95,13 +97,15 @@ In the area of NLP there is a lack of datasets and corpus available in many lang
 
 The objective of this research is to study the creation of a corpus of fine-grained emotions for low resources languages, specifically the Portuguese. Due to limited financial resources, a specific objective of this work is to study the use of the weak supervision strategy to construct our corpus. Weak supervision is a strategy when there is no human annotation of each datapoint does not occur, but the labels are attributed using noisy and limited sources or specific rules. Then we proposed the following Research Question to guide our work:
 
+\noindent
 RQ1: Is the weak supervision strategy suitable for building an NLP corpus for the fine-grained Emotion Recognition task in a low resources environment?
 
-RQ2: What is a proper weak supervision approach to construct a corpus for  fine-grained Emotion Recognition task in NLP? 
+\noindent
+RQ2: What is a proper weak supervision approach to construct a corpus for  fine-grained Emotion Recognition task in NLP?
 
-One of our hypothesis is that a lexical-based approach can be an adequate strategy to collect samples for each of the categories of our dataset, using the Lexical Item (LI) as a criterion for defining the label in an adequate way for Portuguese. A second hypothesis is that the use of SOTA Machine Learning techniques (specifically Transformers based language models), combined with the application of masking techniques in the LI presented in the weak supervised corpus, can avoid the model to overfit during the learning phase. 
+One of our hypothesis is that a lexical-based approach can be an adequate strategy to collect samples for each of the categories of our dataset, using the Lexical Item (LI) as a criterion for defining the label in an adequate way for Portuguese. A second hypothesis is that the use of SOTA Machine Learning techniques (specifically Transformers based language models), combined with the application of masking techniques in the LI presented in the weak supervised corpus, can avoid the model to overfit during the learning phase.
 
-To answer RQ1 and RQ2 and validate our hypotheses, we prepared an experiment to create a weak supervised corpus in Portuguese and measure its performance by training a classification model. In the following sections we will describe our experimental protocol, including how we collected and weakly annotated the data, our model architecture, metrics and results. 
+To answer RQ1 and RQ2 and validate our hypotheses, we prepared an experiment to create a weak supervised corpus in Portuguese and measure its performance by training a classification model. In the following sections we will describe our experimental protocol, including how we collected and weakly annotated the data, our model architecture, metrics and results.
 
 \section{Experimental Protocol}
 
@@ -116,10 +120,10 @@ Our experiment is composed by the following pipeline: defining emotion categorie
 
 \subsection{Collecting the data}
 
-- A coleta foi feita no twitter entre os dias 23 e 24 de junho de 2016. 
+- A coleta foi feita no twitter entre os dias 23 e 24 de junho de 2016.
 - Descrever o processo de limpeza. Foram removidos hashtags, Links e replies.
 
-- Descrever o tamanho da amostra total de treino e por emoções. 
+- Descrever o tamanho da amostra total de treino e por emoções.
 
 \subsection{Golden standard for test dataset}
 
@@ -128,25 +132,25 @@ Our experiment is composed by the following pipeline: defining emotion categorie
 
 
 \subsection{Models}
-- Descrever que o modelo utilizado foi a implementação BERT Bertimbau pré-treinado. 
+- Descrever que o modelo utilizado foi a implementação BERT Bertimbau pré-treinado.
 
 - Foi feito o fine-tuning de três modelos
 
 - O primeiro usou o dados de treinamento sem intervenção
 
-- O segundo uso dados de treinamento no qual 30% dos datapoints foram mascarados. Ou seja, 30% dos termos utilizados para o WeakLabel foram trocados por [MASK]. Argumentar que a importância disso era evitar o overffiting por palavras específicas. 
+- O segundo uso dados de treinamento no qual 30% dos datapoints foram mascarados. Ou seja, 30% dos termos utilizados para o WeakLabel foram trocados por [MASK]. Argumentar que a importância disso era evitar o overffiting por palavras específicas.
 
 - O terceiro modelo foi treinado mascarando todos os termos por [MASK]
 
 \subsection{Parameters Settings}
 Settings do modelo
 - learning rate
-- batchsize 
+- batchsize
 - epochs
-- threshold 
+- threshold
 
 \subsection{Metrics}
-Descrever que a métrica de avaliação será a Precision, Recall and F1-score Macro (para o modelo e classes). 
+Descrever que a métrica de avaliação será a Precision, Recall and F1-score Macro (para o modelo e classes).
 
 \subsection{Results}
 Apresentar o resultado dos três modelos treinados:
