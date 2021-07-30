@@ -112,13 +112,47 @@ To answer RQ1 and RQ2 and validate our hypotheses, we prepared an experiment to 
 Our experiment is composed by the following pipeline: defining emotion categories based on semantic space theory for Portuguese; selecting the lexical items related to each emotion category based on its definition; collecting the data; manually annotating a test dataset to create a golden standard; defining the model architecture; training the model and evaluating it on golden standard. Each of them is described in details in this paper.
 
 \subsection{Defining Emotion Categories}
-- Explicar que herdamos as emoções do GoEmotion, mas adicionamos saudade,
 
+The emotion categories for this research were defined from a review of the GoEmotion work \cite{Demszky2020}. The review process had two stages and had the participation of a group of 7 (seven) researchers with different backgrounds (psychology, neuroscience, sociology, communications, cognitive science and computer science). In the first stage, during a working meeting, the researchers discussed and reviewed each of the emotions in English and proposed a translation into Portuguese based on the  definitions of each emotion. The result of this first stage was a translated list of terms with consensus among the reviewers.
+
+The second stage was reviewing the categories definition in Portuguese to check if they were all consistent with the language. The researchers suggested changing the emotional category \textit{cuidado}, translated from \textit{caring} to \textit{compaixão}, as it is a more comprehensive and blended category in the Portuguese language. The second proposal was the removal of the emotion \textit{realization}, in the sense of perceiving something, as it is not a much prevalent emotional category in the Portuguese language. Finally, there was a consensus among researchers to add the categories \textit{saudade} and \textit{inveja} to the list. We also removed neutral to focus in emotions. The final list consists of 28 emotional categories in total. All emotions and their definitions are presented in Table 1.
+
+\begin{table}
+  \caption{Emotions Categories in Portuguese}
+  \label{tab:emotions}
+  \begin{tabularx}{\textwidth}{X}
+    \includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=\textwidth]{img-n-tables/EMOCOES}
+  \end{tabularx}
+\end{table}
 
 \subsection{Selecting Lexical Items for weak supervision }
-- Explicar o processo de Weaklabel (associação dos termos com as categorias de emoções - sinônimos e conjugações de verbos que tinham a ver com a definição de emoção utilizada)
+After the translation and definition of emotions into Portuguese, the next step was to select the Lexical Items that would serve as a filter to search for examples and label assignment rule (weak supervision). For each of the emotions on the list, we initially look for related Lexical Items by synonyms. For this, we use the database available at www.sinonimos.com.br, which has more than 30 thousand synonyms of words and expressions for Portuguese.
 
-\subsection{Collecting the data}
+Because some words of emotion presented polysemic behavior, we opted for human curation to select the proper Lexical Items. Only synonyms that had a semantic relationship with the definition of emotion were considered, and not just with emotion term. Then, for each Verbal Lexical Item, we collect the different conjugations in the repository www.conjugacao.com.br to cover all tenses and moods in Portuguese. To avoid the negation effect, we manipulated the data as follows: we searched for the combination of the word "não" (no/not in Portuguese) or "nem" (neither in Portuguese) followed by a Lexical Item in our list. If an example was found, we removed it from our dataset. We also added slang and terms related to emotions that were known to the authors. The result of this step was a list in which each emotion was associated with a set of lexical items, which were later used as a data collection filter and label assignment rule.
+
+\subsection{Data}
+
+We use Twitter as a data source. The collection was made between the 23rd and 24th of June (2021) using the platform's official API. The filters used were the list of terms associated with each emotion. Retweets and replies were not considered, keeping only original tweets. Hashtags were removed, but emojis were kept.
+
+In total, 47213 tweets were collected using an weak supervision approach. Each example received the category label according to the Lexical Item used in the collection. For example, if a tweet was collected because it was filtered by a term associated with the emotion \textit{love}, it would be labeled to the \textit{love} category.
+
+ We tried to maintain a balance distribution of example among the classes, but the results of our collection process suggests that some emotional categories are more prevalent than others. In future work, we intend to focus on additional data collection for the categories with the smallest number of examples to achieve a better balance distribution. We present in Figure 1 the total number of examples by category and the descriptive statistics of our dataset.
+
+ \subsubsection{Golden standard for Test Dataset}
+Despite this research studying the feasibility of the weak supervision approach for the Emotion Recognition task in NLP, it is worth noting the importance of building a dataset with human curation to evaluate the performance of a trained model with the created dataset.
+
+To meet this requirement, we separated a set composed of 1773 examples from the dataset created earlier, we removed the labels assigned by the weak supervision approach so that they could be manually annotated by a human. Due to limited resources, it was not possible to cross-annotate, with each example being annotated by only one annotator. For this reason, it is not possible to present any measure of agreement between the annotators. We recognize the limitations of this procedure, which can reduce the quality of supervision and introduce bias.
+
+
+\begin{figure}
+\centering
+\includegraphics[width=.85\textwidth]{img-n-tables/qt-emotion.png}
+\caption{Number of example per categories~\ref{sec:figs}.}
+\label{fig:exampleFig2}
+\end{figure}
+
+
+
 
 - A coleta foi feita no twitter entre os dias 23 e 24 de junho de 2016.
 - Descrever o processo de limpeza. Foram removidos hashtags, Links e replies.
@@ -165,20 +199,15 @@ Apresentar o resultado dos três modelos treinados:
 \section{Conclusions}\label{sec:figs}
 
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.5\textwidth]{img/fig1.jpg}
-\caption{A typical figure}
-\label{fig:exampleFig1}
-\end{figure}
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=.3\textwidth]{img/fig2.jpg}
-\caption{This figure is an example of a figure caption taking more than one
-  line and justified considering margins mentioned in Section~\ref{sec:figs}.}
-\label{fig:exampleFig2}
-\end{figure}
+
+\begin{figure}
+  \caption{Quantity of examples by categories}
+  \label{tab:emotions}
+  \begin{tabularx}{\textwidth}{X}
+    \includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=\textwidth]{img-n-tables/EMOCOES}
+  \end{tabularx}
+\end{table}
 
 In tables, try to avoid the use of colored or shaded backgrounds, and avoid
 thick, doubled, or unnecessary framing lines. When reporting empirical data,
