@@ -21,6 +21,7 @@
 %\usepackage[brazil]{babel}
 \usepackage[utf8]{inputenc}
 
+\usepackage{tabularx}
 \usepackage{xcolor}
 \newcommand{\red}[1]{\textcolor{red}{#1}}
 
@@ -68,6 +69,7 @@
 
 
 \section{Introduction}
+\label{sec:introduction}
 
 Affective computing is the study of how computers can recognize, interpret and simulate human effects. According to Rosalind Picard, one of the pionners in this field, it is important to develop the ability to recognize, understand and express emotions in computers if we want to have an intelligent and natural interaction between human and machines \cite{Rosalind2000}. We can develop affective computing technologies using different types of input: such as facial expression, voice, physiological data and language. The scope of this research, however, is delimited in the area of Natural Language Processing (NLP).
 
@@ -76,6 +78,7 @@ A common task in NLP is Sentiment Analysis which typically classify a text in th
 The delimitation of this research is concentrated in the area of fine-grained Emotion Recognition. In other words, the focus of the work is to study the creation of a corpus in Portuguese that has a greater granularity of emotional categories, instead of just the valence categories.
 
 \section{Related Work}
+\label{sec:related-work}
 
 There is an ongoing debate about the nature of human emotions, with different perspectives and theories. On one side is the theory of basic emotions, whose greatest exponent is the psychologist Paul Ekman. According to him, there are basic and universal emotions in humans that have unique features: such as facial expressions, signs, physiology and antecedent events \cite{Ekman1992}.
 
@@ -94,6 +97,7 @@ Although the GoEmotion dataset was released according to open data standards \ci
 In the area of NLP there is a lack of datasets and corpus available in many languages. This is the case of Portuguese, which has a small amount of Sentiment Analysis datasets when compared to English \cite{Pereira2021}. It's worth noting that we searched for dataset of fine-grained emotion, but we didn't find any in Portuguese.
 
 \section{Objectives, Research Questions and Hypothesis}
+\label{sec:objectives}
 
 The objective of this research is to study the creation of a corpus of fine-grained emotions for low resources languages, specifically the Portuguese. Due to limited financial resources, a specific objective of this work is to study the use of the weak supervision strategy to construct our corpus. Weak supervision is a strategy when there is no human annotation of each datapoint does not occur, but the labels are attributed using noisy and limited sources or specific rules. Then we proposed the following Research Question to guide our work:
 
@@ -108,6 +112,7 @@ One of our hypothesis is that a lexical-based approach can be an adequate strate
 To answer RQ1 and RQ2 and validate our hypotheses, we prepared an experiment to create a weak supervised corpus in Portuguese and measure its performance by training a classification model. In the following sections we will describe our experimental protocol, including how we collected and weakly annotated the data, our model architecture, metrics and results.
 
 \section{Experimental Protocol}
+\label{sec:experimental-protocol}
 
 Our experiment is composed by the following pipeline: defining emotion categories based on semantic space theory for Portuguese; selecting the lexical items related to each emotion category based on its definition; collecting the data; manually annotating a test dataset to create a golden standard; defining the model architecture; training the model and evaluating it on golden standard. Each of them is described in details in this paper.
 
@@ -115,13 +120,14 @@ Our experiment is composed by the following pipeline: defining emotion categorie
 
 The emotion categories for this research were defined from a review of the GoEmotion work \cite{Demszky2020}. The review process had two stages and had the participation of a group of 7 (seven) researchers with different backgrounds (psychology, neuroscience, sociology, communications, cognitive science and computer science). In the first stage, during a working meeting, the researchers discussed and reviewed each of the emotions in English and proposed a translation into Portuguese based on the  definitions of each emotion. The result of this first stage was a translated list of terms with consensus among the reviewers.
 
-The second stage was reviewing the categories definition in Portuguese to check if they were all consistent with the language. The researchers suggested changing the emotional category \textit{cuidado}, translated from \textit{caring} to \textit{compaixão}, as it is a more comprehensive and blended category in the Portuguese language. The second proposal was the removal of the emotion \textit{realization}, in the sense of perceiving something, as it is not a much prevalent emotional category in the Portuguese language. Finally, there was a consensus among researchers to add the categories \textit{saudade} and \textit{inveja} to the list. We also removed neutral to focus in emotions. The final list consists of 28 emotional categories in total. All emotions and their definitions are presented in Table 1.
+The second stage was reviewing the categories definition in Portuguese to check if they were all consistent with the language. The researchers suggested changing the emotional category \textit{cuidado}, translated from \textit{caring} to \textit{compaixão}, as it is a more comprehensive and blended category in the Portuguese language. The second proposal was the removal of the emotion \textit{realization}, in the sense of perceiving something, as it is not a much prevalent emotional category in the Portuguese language. Finally, there was a consensus among researchers to add the categories \textit{saudade} and \textit{inveja} to the list. We also removed neutral to focus in emotions. The final list consists of 28 emotional categories in total. All emotions and their definitions are presented in Table \ref{tab:emotion-categories}.
 
 \begin{table}
-  \caption{Emotions Categories in Portuguese}
-  \label{tab:emotions}
+  \caption{Portuguese Emotion Categories}
+  \label{tab:emotion-categories}
   \begin{tabularx}{\textwidth}{X}
-    \includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=\textwidth]{img-n-tables/EMOCOES}
+    \centering
+    \includegraphics[trim=1.2cm 10.9cm 3.2cm 1.5cm, clip, scale=0.5]{img-n-tables/EMOCOES}
   \end{tabularx}
 \end{table}
 
@@ -136,22 +142,19 @@ We use Twitter as a data source. The collection was made between the 23rd and 24
 
 In total, 47213 tweets were collected using an weak supervision approach. Each example received the category label according to the Lexical Item used in the collection. For example, if a tweet was collected because it was filtered by a term associated with the emotion \textit{love}, it would be labeled to the \textit{love} category.
 
- We tried to maintain a balance distribution of example among the classes, but the results of our collection process suggests that some emotional categories are more prevalent than others. In future work, we intend to focus on additional data collection for the categories with the smallest number of examples to achieve a better balance distribution. We present in Figure 1 the total number of examples by category and the descriptive statistics of our dataset.
+We tried to maintain a balance distribution of example among the classes, but the results of our collection process suggests that some emotional categories are more prevalent than others. In future work, we intend to focus on additional data collection for the categories with the smallest number of examples to achieve a better balance distribution. We present in Figure \ref{fig:example-per-category} the total number of examples by category and the descriptive statistics of our dataset.
 
- \subsubsection{Golden standard for Test Dataset}
+\subsubsection{Golden standard for Test Dataset}
 Despite this research studying the feasibility of the weak supervision approach for the Emotion Recognition task in NLP, it is worth noting the importance of building a dataset with human curation to evaluate the performance of a trained model with the created dataset.
 
 To meet this requirement, we separated a set composed of 1773 examples from the dataset created earlier, we removed the labels assigned by the weak supervision approach so that they could be manually annotated by a human. Due to limited resources, it was not possible to cross-annotate, with each example being annotated by only one annotator. For this reason, it is not possible to present any measure of agreement between the annotators. We recognize the limitations of this procedure, which can reduce the quality of supervision and introduce bias.
 
-
 \begin{figure}
-\centering
-\includegraphics[width=.85\textwidth]{img-n-tables/qt-emotion.png}
-\caption{Number of example per categories~\ref{sec:figs}.}
-\label{fig:exampleFig2}
+  \label{fig:example-per-category}
+  \caption{Examples per categories.}
+  \includegraphics[scale=0.5]{img-n-tables/qt-emotion.png}
+  \centering
 \end{figure}
-
-
 
 
 - A coleta foi feita no twitter entre os dias 23 e 24 de junho de 2016.
@@ -196,18 +199,8 @@ Apresentar o resultado dos três modelos treinados:
 - 100 por cento dos termos mascarados
 
 
-\section{Conclusions}\label{sec:figs}
-
-
-
-
-\begin{figure}
-  \caption{Quantity of examples by categories}
-  \label{tab:emotions}
-  \begin{tabularx}{\textwidth}{X}
-    \includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=\textwidth]{img-n-tables/EMOCOES}
-  \end{tabularx}
-\end{table}
+\section{Conclusions}
+\label{sec:conclusions}
 
 In tables, try to avoid the use of colored or shaded backgrounds, and avoid
 thick, doubled, or unnecessary framing lines. When reporting empirical data,
@@ -216,28 +209,22 @@ reproducibility. Table caption must be placed before the table (see Table 1)
 and the font used must also be Helvetica, 10 point, boldface, with 6 points of
 space before and after each caption.
 
+
+Referencia a tabela utilizando a tag ref \ref{tab:variables-on-eval}.
+
 \begin{table}[ht]
-\centering
-\caption{Variables to be considered on the evaluation of interaction
-  techniques}
-\label{tab:exTable1}
-\includegraphics[width=.7\textwidth]{table.jpg}
+  \label{tab:variables-on-eval}
+  \caption{Variables to be considered on the evaluation of interaction techniques}
+  \centering
+  \includegraphics[trim=0cm 0.2cm 0.2cm 0cm, clip, scale=0.7]{table.jpg}
 \end{table}
 
-\section{Images}
-
-All images and illustrations should be in black-and-white, or gray tones,
-excepting for the papers that will be electronically available (on CD-ROMs,
-internet, etc.). The image resolution on paper should be about 600 dpi for
-black-and-white images, and 150-300 dpi for grayscale images.  Do not include
-images with excessive resolution, as they may take hours to print, without any
-visible difference in the result.
-
 \section{References}
+\label{sec:references}
 
 Bibliographic references must be unambiguous and uniform.  We recommend giving
-the author names references in brackets, e.g. \cite{knuth:84},
-\cite{boulic:91}, and \cite{smith:99}.
+the author names references in brackets, e.g. , ??
+??, and ??.
 
 The references must be listed using 12 point font size, with 6 points of space
 before each reference. The first line of each reference should not be
