@@ -20,7 +20,7 @@
 
 %\usepackage[brazil]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{tabularx}
+
 \usepackage{xcolor}
 \newcommand{\red}[1]{\textcolor{red}{#1}}
 
@@ -69,25 +69,25 @@
 
 \section{Introduction}
 
-Affective computing is the study of how computers can recognize, interpret and simulate human effects. According to Rosalind Picard, one of the pionners in this field, it is important to develop the ability to recognize, understand, and express emotions in computers if we want to have an intelligent and natural interaction between human and machines \cite{Rosalind2000}. We can develop affective computing technologies using different types of input, such as facial expression, voice, physiological data and language. The scope of this research, however, is delimited in the area of Natural Language Processing (NLP).
+Affective computing is the study of how computers can recognize, interpret and simulate human effects. According to Rosalind Picard, one of the pionners in this field, it is important to develop the ability to recognize, understand and express emotions in computers if we want to have an intelligent and natural interaction between human and machines \cite{Rosalind2000}. We can develop affective computing technologies using different types of input: such as facial expression, voice, physiological data and language. The scope of this research, however, is delimited in the area of Natural Language Processing (NLP).
 
-A common task in NLP is Sentiment Analysis which typically classify a text in three different categories: positive, negative, and neutral \cite{Drus2019}. Emotion Recognition task, however, is a more detailed NLP task. Rather than classifying text only into valence categories (positive, negative or neutral), it classifies text into granular emotional categories.
+A common task in NLP is Sentiment Analysis which typically classify a text in three different categories: positive, negative and neutral \cite{Drus2019}. Emotion Recognition task, however, is a more detailed NLP task. Rather than classifying text only into valence categories (positive, negative or neutral), it classifies text into more detailed emotional categories.
 
-The scope of this research is concentrated in the area of fine-grained Emotion Recognition. In other words, the focus of the work is to study the creation of a corpus in Portuguese language that has a greater granularity of emotional categories, instead of just the valence categories.
+The delimitation of this research is concentrated in the area of fine-grained Emotion Recognition. In other words, the focus of the work is to study the creation of a corpus in Portuguese that has a greater granularity of emotional categories, instead of just the valence categories.
 
 \section{Related Work}
 
 There is an ongoing debate about the nature of human emotions, with different perspectives and theories. On one side is the theory of basic emotions, whose greatest exponent is the psychologist Paul Ekman. According to him, there are basic and universal emotions in humans that have unique features: such as facial expressions, signs, physiology and antecedent events \cite{Ekman1992}.
 
-There are several works in the area of NLP that are based on the theory of basic emotions to classify texts into defined categories of emotions, ranging from 4 (four) to 8 (eight) the number of categories. One of the studies adopted the 6 (six) basic emotions proposed by Ekman (\textit{joy, fear, anger, sadness, surprise,} and \textit{disgust}) to train an Emotion Recognition model \cite{Batbaatar2019}. Another researched added \textit{trust} and \textit{anticipation} emotions to the basic emotions, working with 8 (eight) basic emotion categories \cite{Sosea2020}.
+There are several works in the area of NLP that are based on the theory of basic emotions to classify texts into defined categories of emotions, ranging from 4 (four) to 8 (eight) the number of categories. One of the studies adopted the 6 (six) basic emotions proposed by Ekman (joy, fear, anger, sadness, surprise and disgust) to train an Emotion Recongnition model \cite{Batbaatar2019}. Another researched added trust and anticipation emotions to the basic emotions, working with 8 (eight) basic emotion categories \cite{Sosea2020}.
 
 However, there are other theories that challenge the proposition of basic emotions. Lisa Feldman Barrett proposed The Theory of Constructed emotion. Supported by positions from cognitive science and evidence from neuroscience experiments, the researcher argues that basic and universal emotions do not exist and that all emotional experience is constructed based on interoception and categorization process \cite{Barrett2016}.
 
-Between those two antagonistic theories (The Basic Emotion Theory and The Theory of Constructed Emotion) an alternative perspective emerges: The Semantic Space Theory \cite{Cowen2021}. It is a computational approach that uses naturalistic stimuli and open-ended statistical techniques to capture emotional variations in behavior. Results suggest that more than 25 emotional classes have distinct profiles of previous expressions and events. Authors argue that these emotions are high-dimensional, categorical, and often blended.
+Between those two antagonistic theories (The Basic Emotion Theory and The Theory of Constructed Emotion) an alternative perspective emerges: The Semantic Space Theory \cite{Cowen2021}. It is a computational approach that uses naturalistic stimuli and open-ended statistical techniques to capture emotional variations in behavior. The results suggest that more than 25 emotional classes have distinct profiles of previous expressions and events. The authors argue that these emotions are high-dimensional, categorical, and often blended.
 
-Based on the Semantic Space Theory, a research that had the participation of one of the authors of the theory, created a dataset for training NLP models for the Emotion Recognition task. This is GoEmotions, a dataset with more than 58,000 English Reddit comments labeled for 27 categories of emotions and Neutral. The authors fine-tuned a BERT language model and achieved an average F1-score of .46 \cite{Demszky2020}.
+Based on the Semantic Space Theory, a research that had the participation of one of the authors of the theory, created a dataset for training NLP models in the Emotion Recognition task. This is GoEmotions, a dataset with more than 58,000 Portuguese Reddit comments noted for 27 categories of emotions and Neutral. The authors fine-tuned a BERT language model and achieved an average F1-score of .46 \cite{Demszky2020}.
 
-Despite the average f1-score below .50, some classes scored above .70. It is a complex dataset with many categories that often have fuzzy boundaries among them. It is important to argue about the need for creating a fine-grained dataset, with more emotional categories, so that research in the Affective Computing area is not limited to Sentiment Analysis or to the limited categories proposed by the basic theory.
+Despite the average f1-score below .50, some classes scored above .70. It is a complex dataset with a lot of categories that often have fuzzy boundaries between them. It is important to argue about the importance of creating a fine-grained dataset, with more emotional categories, so that research in the Affective Computing area is not limited to Sentiment Analysis or to the limited categories proposed by the basic theory.
 
 Although the GoEmotion dataset was released according to open data standards \cite{Demszky2020}, the scope of the corpus is limited to the English, which makes it difficult to use in applications in other languages. One of the challenges that the Machine Learning faces is dealing with low-resources, when the data available is not enough to train the models. This phenomenon can happen in specific domains of applications, but also in specific geographic regions.
 
@@ -112,22 +112,6 @@ To answer RQ1 and RQ2 and validate our hypotheses, we prepared an experiment to 
 Our experiment is composed by the following pipeline: defining emotion categories based on semantic space theory for Portuguese; selecting the lexical items related to each emotion category based on its definition; collecting the data; manually annotating a test dataset to create a golden standard; defining the model architecture; training the model and evaluating it on golden standard. Each of them is described in details in this paper.
 
 \subsection{Defining Emotion Categories}
-
-The emotion categories for this research were defined from a review of the GoEmotion work \cite{Demszky2020}. The review process had two stages and had the participation of a group of 7 (seven) researchers with different backgrounds (psychology, neuroscience, sociology, communications, cognitive science and computer science). In the first stage, during a working meeting, the researchers discussed and reviewed each of the emotions in English and proposed a translation into Portuguese based on the  definitions of each emotion. The result of this first stage was a translated list of terms with consensus among the reviewers.
-
-The second stage was reviewing the categories definition in Portuguese to check if they were all consistent with the language. The researchers suggested changing the emotional category \textit{cuidado}, translated from \textit{caring} to \textit{compaixão}, as it is a more comprehensive and blended category in the Portuguese language. The second proposal was the removal of the emotion \textit{Realization}, in the sense of perceiving something, as it is not a much prevalent emotional category in the Portuguese language. Finally, there was a consensus among researchers to add the categories \textit{saudade} and \textit{inveja} to the list. The final list of emotional categories and their definitions are presented in Table 1.
-
-\begin{table}
-  \caption{Emotions}
-  \label{tab:emotions}
-  \begin{tabularx}{\textwidth}{X}
-    \includegraphics[trim=0cm 0cm 0cm 0cm, clip, width=\textwidth]{img-n-tables/EMOCOES}
-  \end{tabularx}
-\end{table}
-
-
-
-
 - Explicar que herdamos as emoções do GoEmotion, mas adicionamos saudade,
 
 
