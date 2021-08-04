@@ -22,26 +22,30 @@
 
 \usepackage{tabularx}
 \usepackage{xcolor}
-\newcommand{\red}[1]{\textcolor{red}{#1}}
 
+\newcommand{\red}[1]{\textbf{\textcolor{red}{#1}}}
+\definecolor{light-gray}{gray}{0.95}
+\newcommand{\emotion}[1]{\colorbox{light-gray}{\textsc{#1}}}
+\newcommand{\F}{\textit{F}\textsubscript{1}}
 
 \sloppy
 
 \title{A Weak Supervised Dataset of Fine-Grained Emotions in Portuguese}
 
-\author{Diogo Cortiz\inst{1,2}, Jefferson O. Silva\inst{2}, Newton Calegari\inst{2}, 
+\author{Diogo Cortiz\inst{1,2}, Jefferson O. Silva\inst{2}, Newton Calegari\inst{2}, \\
 
-Ana Luísa Freitas\inst{3}, Paulo Sergio Boggio\inst{3}}
+Ana L. Freitas\inst{3}, Paulo S. Boggio\inst{3}}
 
 \address{Brazilian Network Information Center (NIC.br) \\
   São Paulo, SP -- Brazil
 \nextinstitute
-  Pontificia Universidade Católica de São Paulo (PUC-SP) \\
-  São Paulo, SP -- Brazil.
-\nextinstitute
-  Universidade Presbiteriana Mackenzie (Mackenzie) \\
-  São Paulo, SP -- Brazil.
+  Pontifical Catholic University of São Paulo (PUC-SP) \\
+  São Paulo, SP -- Brazil
   \email{\{dcortiz, silvajo, njcalegari\}@pucsp.br}
+\nextinstitute
+  Mackenzie Presbyterian University \\
+  São Paulo, SP -- Brazil
+  \email{\{\red{email}, paulo.boggio\}@mackenzie.br}
 }
 
 \begin{document}
@@ -49,13 +53,11 @@ Ana Luísa Freitas\inst{3}, Paulo Sergio Boggio\inst{3}}
 \maketitle
 
 \begin{abstract}
-Affective computing is the study of how computers can recognize, interpret and simulate human affects. Sentiment Analysis is a common task in NLP related to this topic, but it focuses only on emotion valence (positive, negative, neutral). An emerging approach in NLP is Emotion Recognition, which relies on fined-grained classification. This research describes an approach to create a lexical-based weak supervised corpus for fine-grained emotion in Portuguese. We evaluate our dataset by fine-tuning a transformer-based language model (BERT) and validating it on a Golden Standard annotated validation set. Our results (f1-score .64) suggest lexical-based weak supervision as an appropriate strategy for initial work in low resources environment.
+Affective computing is the study of how computers can recognize, interpret and simulate human affects. Sentiment Analysis is a common task in NLP related to this topic, but it focuses only on emotion valence (positive, negative, neutral). An emerging approach in NLP is Emotion Recognition, which relies on fined-grained classification. This research describes an approach to create a lexical-based weak supervised corpus for fine-grained emotion in Portuguese. We evaluate our dataset by fine-tuning a transformer-based language model (BERT) and validating it on a Golden Standard annotated validation set. Our results (\F~= $.64$) suggest lexical-based weak supervision as an appropriate strategy for initial work in low resources environment.
 \end{abstract}
 
 \begin{resumo}
 A computação afetiva é o estudo de como os computadores podem reconhecer, interpretar e simular os afetos humanos. A Análise de Sentimento é uma tarefa comum em PLN, mas se concentra apenas na valência da emoção (positiva, negativa, neutra). Uma abordagem emergente é o Reconhecimento de Emoção, que depende de uma classificação refinada. Nesta pesquisa, descrevemos uma abordagem de supervisão fraca baseada em Itens Lexicais para criar um corpus de emoções refinadas em português. Avaliamos nosso corpus fazendo o ajuste fino de um modelo de linguagem baseado em Transformer (BERT) e avaliando-o em um conjunto de validação anotado. Nossos resultados (f1-score = .64) sugerem que a supervisão fraca baseada em Itens Lexicais pode ser uma estratégia apropriada para o trabalho inicial em ambiente de poucos recursos.
-
-
 
 \end{resumo}
 
@@ -63,11 +65,11 @@ A computação afetiva é o estudo de como os computadores podem reconhecer, int
 \section{Introduction}
 \label{sec:introduction}
 
-Affective computing is the study of how computers can recognize, interpret and simulate human affects. According to Rosalind Picard, one of the pioneers in this field, it is crucial to develop the ability to recognize, understand and express emotions in computers if we want to have an intelligent and natural interaction between humans and machines \cite{Rosalind2000}. We can develop affective computing technologies using different types of input: such as facial expression, voice, physiological data, and language. However, the scope of this research is delimited in the area of Natural Language Processing (NLP).
+Affective Computing comprises the study of how computers can recognize, interpret and simulate human affects. According to Picard \cite{Rosalind2000}, a field pioneer, it is imperative to develop ways for computers to be able to recognize, understand and express emotions for intelligent and natural interaction between humans and machines. Although Affective Computing may employ several input types such as facial expression images, voice, or physiological data, our research focuses on the written language. Thus, our scope lies in the area of Natural Language Processing (NLP).
 
 A common task in NLP is Sentiment Analysis which classifies a text into three different categories: positive, negative, and neutral \cite{Drus2019}. The Emotion Recognition task, however, is a more detailed NLP task. Rather than classifying text only into valence categories (positive, negative, or neutral), it classifies text into more detailed emotional categories.
 
-The delimitation of this research is concentrated in the area of fine-grained Emotion Recognition. We studied an approach to create a corpus in Portuguese for this task using a weak supervision approach. 
+The delimitation of this research is concentrated in the area of fine-grained Emotion Recognition. We studied an approach to create a corpus in Portuguese for this task using a weak supervision approach.
 
 \section{Related Work}
 \label{sec:related-work}
@@ -91,7 +93,7 @@ In the area of NLP, there is a lack of datasets and corpus available in many lan
 \section{Objectives, Research Questions and Hypothesis}
 \label{sec:objectives}
 
-This research aims to study the creation of a corpus of fine-grained emotions for low resources languages, specifically Portuguese. Due to limited financial resources, a specific objective of this work is to study the use of the weak supervision strategy to construct our corpus. Weak supervision is a strategy when there is no human annotation of each data point, but the labels are attributed using noisy and limited sources or specific rules. Then we proposed the following Research Question to guide our work:
+This research aims to study the creation of a corpus of fine-grained emotions for low resources languages, specifically Portuguese. Due to limited financial resources, a specific objective of this work is to study the use of the weak supervision strategy to construct our corpus. Weak supervision is a strategy when there is no human annotation of each data point, but the labels are attributed using noisy and limited sources or specific rules. We proposed the following research questions (RQ) to guide our work:
 
 \noindent
 RQ1: Is the weak supervision strategy suitable for building an NLP corpus for the fine-grained Emotion Recognition task in a low resources environment?
@@ -164,7 +166,7 @@ We ended up with three datasets for training three different models. The first i
 \subsubsection{Golden standard for validation}
 Despite this research studying the feasibility of the weak supervision approach for the Emotion Recognition task in NLP, it is worth noting the importance of building a dataset with human curation to evaluate the performance of a trained model with the created dataset.
 
-To meet this requirement, we separated a set composed of 1773 examples from the dataset created earlier; we removed the labels assigned by the weak supervision approach so that a human could manually annotate them. We did not apply any Masking technique to this set. Due to limited resources, it was not possible to cross-annotate the validation dataset. Only one annotator annotated each example. For this reason, it is not possible to present any measure of agreement between the annotators. We recognize the limitations of this procedure, which can reduce the quality of supervision and introduce bias. 
+To meet this requirement, we separated a set composed of 1773 examples from the dataset created earlier; we removed the labels assigned by the weak supervision approach so that a human could manually annotate them. We did not apply any Masking technique to this set. Due to limited resources, it was not possible to cross-annotate the validation dataset. Only one annotator annotated each example. For this reason, it is not possible to present any measure of agreement between the annotators. We recognize the limitations of this procedure, which can reduce the quality of supervision and introduce bias.
 
 
 \subsection{Models}
@@ -188,7 +190,7 @@ The results in Table 3 show the performance of our three models. As we can obser
 \end{table}
 
 
-Those results suggest that masking a certain amount of Lexical items used as a label rule (weak supervision) could be an appropriate strategy to stimulate the model to learn by context and not only by memorizing LI. However, masking all LI introduces much noise to the training dataset, significantly impacting the model performance. 
+Those results suggest that masking a certain amount of Lexical items used as a label rule (weak supervision) could be an appropriate strategy to stimulate the model to learn by context and not only by memorizing LI. However, masking all LI introduces much noise to the training dataset, significantly impacting the model performance.
 
 
 \section{Conclusions}
