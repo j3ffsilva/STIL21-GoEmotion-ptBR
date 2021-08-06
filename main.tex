@@ -23,6 +23,12 @@
 \usepackage{tabularx}
 \usepackage{xcolor}
 
+\usepackage[colorlinks]{hyperref}
+\hypersetup{
+    colorlinks=false,
+    allbordercolors={white},
+}
+
 \newcommand{\red}[1]{\textbf{\textcolor{red}{#1}}}
 \definecolor{light-gray}{gray}{0.95}
 \newcommand{\emotion}[1]{\colorbox{light-gray}{\textsc{#1}}}
@@ -32,7 +38,7 @@
 
 \title{A Weak Supervised Dataset of Fine-Grained Emotions in Portuguese}
 
-\author{Diogo Cortiz\inst{1,2}, Jefferson O. Silva\inst{2}, Newton Calegari\inst{2}, \\
+\author{Diogo Cortiz\inst{1,2}, Jefferson O. Silva\inst{2,4}, Newton Calegari\inst{2}, \\
 
 Ana L. Freitas\inst{3}, Paulo S. Boggio\inst{3}}
 
@@ -46,6 +52,9 @@ Ana L. Freitas\inst{3}, Paulo S. Boggio\inst{3}}
   Mackenzie Presbyterian University \\
   São Paulo, SP -- Brazil
   \email{\{\red{email}, paulo.boggio\}@mackenzie.br}
+\nextinstitute
+    Jusbrasil \\
+    São Paulo, SP -- Brazil
 }
 
 \begin{document}
@@ -53,14 +62,13 @@ Ana L. Freitas\inst{3}, Paulo S. Boggio\inst{3}}
 \maketitle
 
 \begin{abstract}
-Affective computing is the study of how computers can recognize, interpret and simulate human affects. Sentiment Analysis is a common task in NLP related to this topic, but it focuses only on emotion valence (positive, negative, neutral). An emerging approach in NLP is Emotion Recognition, which relies on fined-grained classification. This research describes an approach to create a lexical-based weak supervised corpus for fine-grained emotion in Portuguese. We evaluate our dataset by fine-tuning a transformer-based language model (BERT) and validating it on a Golden Standard annotated validation set. Our results (\F~= $.64$) suggest lexical-based weak supervision as an appropriate strategy for initial work in low resources environment.
+Affective Computing is the study of how computers can recognize, interpret and simulate human affects. Sentiment Analysis is a common task in NLP related to this topic, but it focuses only on emotion valence (positive, negative, neutral). An emerging approach in NLP is Emotion Recognition, which relies on fined-grained classification. This research describes an approach to create a lexical-based weak supervised corpus for fine-grained emotion in Portuguese. We evaluate our dataset by fine-tuning a transformer-based language model (BERT) and validating it on a Golden Standard annotated validation set. Our results (\F~= $.64$) suggest lexical-based weak supervision as an appropriate strategy for initial work in low resources environment.
 \end{abstract}
 
 \begin{resumo}
-A computação afetiva é o estudo de como os computadores podem reconhecer, interpretar e simular os afetos humanos. A Análise de Sentimento é uma tarefa comum em PLN, mas se concentra apenas na valência da emoção (positiva, negativa, neutra). Uma abordagem emergente é o Reconhecimento de Emoção, que depende de uma classificação refinada. Nesta pesquisa, descrevemos uma abordagem de supervisão fraca baseada em Itens Lexicais para criar um corpus de emoções refinadas em português. Avaliamos nosso corpus fazendo o ajuste fino de um modelo de linguagem baseado em Transformer (BERT) e avaliando-o em um conjunto de validação anotado. Nossos resultados (f1-score = .64) sugerem que a supervisão fraca baseada em Itens Lexicais pode ser uma estratégia apropriada para o trabalho inicial em ambiente de poucos recursos.
+A Computação Afetiva é o estudo de como os computadores podem reconhecer, interpretar e simular os afetos humanos. A Análise de Sentimento é uma tarefa comum em PLN, mas se concentra apenas na valência da emoção (positiva, negativa, neutra). Uma abordagem emergente é o Reconhecimento de Emoção, que depende de uma classificação refinada. Nesta pesquisa, descrevemos uma abordagem de supervisão fraca baseada em Itens Lexicais para criar um corpus de emoções refinadas em português. Avaliamos nosso corpus fazendo o ajuste fino de um modelo de linguagem baseado em Transformer (BERT) e avaliando-o em um conjunto de validação anotado. Nossos resultados (\F~= $.64$) sugerem que a supervisão fraca baseada em Itens Lexicais pode ser uma estratégia apropriada para o trabalho inicial em ambiente de poucos recursos.
 
 \end{resumo}
-
 
 \section{Introduction}
 \label{sec:introduction}
@@ -77,14 +85,13 @@ The delimitation of this research is concentrated in the area of fine-grained Em
 There is an ongoing debate about the nature of human emotions, with different perspectives and theories. On one side is the theory of basic emotions, whose greatest exponent is the psychologist Paul Ekman. According to him, there are basic and universal emotions in humans that have unique features: such as facial expressions, physiology, and antecedent events \cite{Ekman1992}.
 
 Several works in NLP are based on the theory of basic emotions to classify texts into defined categories of emotions, ranging from 4 (four) to 8 (eight) the number of categories. One of the studies adopted the 6 (six) basic emotions proposed by Ekman (joy, fear, anger, sadness, surprise, and disgust) to train an Emotion Recognition model \cite{Batbaatar2019}. Another research added trust and anticipation emotions to the basic emotions, working with 8 (eight) basic emotion categories \cite{Sosea2020}.
-
 However, other theories challenge the proposition of basic emotions. Lisa Feldman Barrett proposed The Theory of Constructed emotion. Supported by positions from cognitive science and evidence from neuroscience experiments, the researcher argues that basic and universal emotions do not exist and that all emotional experience is constructed based on interoception and categorization process \cite{Barrett2016}.
 
 Between those two antagonistic theories (The Basic Emotion Theory and The Theory of Constructed Emotion), an alternative perspective emerges: The Semantic Space Theory \cite{Cowen2021}. It is a computational approach that uses naturalistic stimuli and open-ended statistical techniques to capture emotional variations in behavior. The results suggest that more than 25 emotional classes have distinct profiles of previous expressions and events. The authors argue that these emotions are high-dimensional, categorical, and often blended.
 
-Based on the Semantic Space Theory, research that had the participation of one of the theory authors created a dataset for training NLP models in the Emotion Recognition task. It is GoEmotions, a dataset with more than 58,000 English Reddit comments noted for 27 categories of emotions and Neutral. The authors fine-tuned a BERT language model and achieved an average F1-score of .46 \cite{Demszky2020}.
+Based on the Semantic Space Theory, research that had the participation of one of the theory authors created a dataset for training NLP models in the Emotion Recognition task. It is GoEmotions, a dataset with more than 58,000 English Reddit comments noted for 27 categories of emotions and Neutral. The authors fine-tuned a BERT language model and achieved an average \F-score of $.46$ \cite{Demszky2020}.
 
-Despite the average f1-score below .50, some classes scored above .70. It is a complex dataset with many categories that often have fuzzy boundaries between them. It is essential to discuss the importance of creating a fine-grained dataset with more emotional categories. Research in the Affective Computing area is not limited to Sentiment Analysis or categories proposed by the basic theory.
+Despite the average \F-score below $.50$, some classes scored above $.70$. It is a complex dataset with many categories that often have fuzzy boundaries between them. It is essential to discuss the importance of creating a fine-grained dataset with more emotional categories. Research in the Affective Computing area is not limited to Sentiment Analysis or categories proposed by the basic theory.
 
 Although the GoEmotion dataset was released according to open data standards \cite{Demszky2020}, the scope of the corpus is limited to English, which makes it difficult to use in applications in other languages. One of the challenges that Machine Learning faces is dealing with a low-resources environment (when the data available is not enough to train the models). This phenomenon can happen in specific domains of applications but also in specific geographic regions.
 
@@ -149,19 +156,17 @@ We tried to maintain a balanced distribution of examples among the classes, but 
 A hypothesis that appeared during the execution of this research was that the models could memorize the Lexical Items (LI) associated with each emotion, reducing generalization properties and causing the model to overfit. We chose to apply a masking technique to the Lexical Items used for collection and label assignment to investigate this phenomenon. The masking technique consisted of replacing an LI by [MASK], as can be seen in the examples in \ref{tab:example-masked}.
 
 \begin{table}[ht]
-\label{tab:example-masked}
-\caption{Masking technique}
-\begin{tabular}{|l|l|}
-\hline
-\textbf{Original} & tô indignada e não é pouco! \\ \hline
-\textbf{Masked} & tô {[}MASK{]} e não é pouco! \\ \hline
-\end{tabular}
-\centering
+  \label{tab:example-masked}
+  \caption{Masking technique}
+  \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Original} & tô indignada e não é pouco! \\ \hline
+    \textbf{Masked} & tô {[}MASK{]} e não é pouco! \\ \hline
+  \end{tabular}
+  \centering
 \end{table}
 
 We ended up with three datasets for training three different models. The first is the original dataset that we created using the weak supervised approach without any masking technique. We identified this dataset as NoMask. The second dataset is the result of applying the masking technique to 30\% of examples for each category. We identified this dataset as 30Mask. The third dataset is the result of masking all Lexical Items. We identified this dataset as FullMasked.
-
-
 
 \subsubsection{Golden standard for validation}
 Despite this research studying the feasibility of the weak supervision approach for the Emotion Recognition task in NLP, it is worth noting the importance of building a dataset with human curation to evaluate the performance of a trained model with the created dataset.
@@ -175,18 +180,19 @@ To study the behavior and performance of our dataset, we needed to fine-tune the
 
 
 \subsubsection{Parameters Settings}
-When finetuning the BERT language model, we keep most of the hyperparameters set in the original paper \cite{Devlin2018}. We changed only batch size and learning rate as proposed by \cite{Demszky2020}. We trained each model for 4 (four) epochs. The threshold to set a classification as positive was .30 (the same used by \cite{Demszky2020}). All models were implemented using the huggingface library. The training process used the same computing environment (Quadro RTX 6000).
+When finetuning the BERT language model, we keep most of the hyperparameters set in the original paper \cite{Devlin2018}. We changed only batch size and learning rate as proposed by \cite{Demszky2020}. We trained each model for 4 (four) epochs. The threshold to set a classification as positive was $.30$ (the same used by \cite{Demszky2020}). All models were implemented using the huggingface library. The training process used the same computing environment (Quadro RTX 6000).
 
 \subsection{Results}
-
 
 The results in Table 3 show the performance of our three models. As we can observe, the model trained with 30\% of LI masked (30Mask) had a similar performance to the model trained with the original dataset with no intervention (NoMask).
 
 \begin{table}[ht]
-  \label{fig:results}
+  \label{tab:results-weak-supervision}
   \caption{Results based on weak supervision}
-  \centering
-  \includegraphics[trim=0.2cm 9.8cm 9.6cm 1.5cm, clip, scale=0.7]{img-n-tables/resultados.pdf}
+  \begin{tabularx}{\textwidth}{X}
+    \centering
+    \includegraphics[trim=0.2cm 9.8cm 9.6cm 1.5cm, clip, scale=0.7]{img-n-tables/resultados.pdf}
+  \end{tabularx}
 \end{table}
 
 
